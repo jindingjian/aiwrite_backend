@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youlai.boot.system.mapper.AigcOrderMapper">
+
+    <!-- 获取aigc文件上传记录分页列表 -->
+    <select id="getAigcOrderPage" resultType="com.youlai.boot.system.model.vo.AigcOrderVO">
+        SELECT
+                id,
+                user_id,
+                file_name,
+                file_size,
+                upload_time,
+                total_word_count,
+                ai_generated_word_count,
+                ai_percentage,
+                human_percentage,
+                human_written_word_count,
+                analysis,
+                download,
+                create_time,
+                update_time
+        FROM
+            tb_aigc_order
+        <where>
+            <if test="queryParams.id != null">
+                AND id = #{queryParams.id}
+            </if>
+            <if test="queryParams.userId != null">
+                AND user_id = #{queryParams.userId}
+            </if>
+            <if test="queryParams.fileName != null and queryParams.fileName != ''">
+                AND file_name = #{queryParams.fileName}
+            </if>
+            <if test="queryParams.fileSize != null">
+                AND file_size = #{queryParams.fileSize}
+            </if>
+            <if test="queryParams.uploadTime != null">
+                <if test="queryParams.uploadTime[0] != null and queryParams.uploadTime[0] != ''">
+                    <bind name="startDate" value="queryParams.uploadTime[0].length() == 10 ? queryParams.uploadTime[0] + ' 00:00:00' : queryParams.uploadTime[0]"/>
+                    AND upload_time &gt;= #{startDate}
+                </if>
+                <if test="queryParams.uploadTime[1] != null and queryParams.uploadTime[1] != ''">
+                    <bind name="endDate" value="queryParams.uploadTime[1].length() == 10 ? queryParams.uploadTime[1] + ' 23:59:59' : queryParams.uploadTime[1]"/>
+                    AND upload_time &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.totalWordCount != null">
+                AND total_word_count = #{queryParams.totalWordCount}
+            </if>
+            <if test="queryParams.aiGeneratedWordCount != null">
+                AND ai_generated_word_count = #{queryParams.aiGeneratedWordCount}
+            </if>
+            <if test="queryParams.aiPercentage != null">
+                AND ai_percentage = #{queryParams.aiPercentage}
+            </if>
+            <if test="queryParams.humanPercentage != null">
+                AND human_percentage = #{queryParams.humanPercentage}
+            </if>
+            <if test="queryParams.humanWrittenWordCount != null">
+                AND human_written_word_count = #{queryParams.humanWrittenWordCount}
+            </if>
+            <if test="queryParams.analysis != null and queryParams.analysis != ''">
+                AND analysis = #{queryParams.analysis}
+            </if>
+            <if test="queryParams.download != null and queryParams.download != ''">
+                AND download = #{download}
+            </if>
+            <if test="queryParams.createTime != null">
+                <if test="queryParams.createTime[0] != null and queryParams.createTime[0] != ''">
+                    <bind name="startDate" value="queryParams.createTime[0].length() == 10 ? queryParams.createTime[0] + ' 00:00:00' : queryParams.createTime[0]"/>
+                    AND create_time &gt;= #{startDate}
+                </if>
+                <if test="queryParams.createdTime[1] != null and queryParams.createdTime[1] != ''">
+                    <bind name="endDate" value="queryParams.createdTime[1].length() == 10 ? queryParams.createTime[1] + ' 23:59:59' : queryParams.createTime[1]"/>
+                    AND create_time &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.updateTime != null">
+                <if test="queryParams.updateTime[0] != null and queryParams.updateTime[0] != ''">
+                    <bind name="startDate" value="queryParams.updateTime[0].length() == 10 ? queryParams.updateTime[0] + ' 00:00:00' : queryParams.updateTime[0]"/>
+                    AND update_time &gt;= #{startDate}
+                </if>
+                <if test="queryParams.updateTime[1] != null and queryParams.updateTime[1] != ''">
+                    <bind name="endDate" value="queryParams.updateTime[1].length() == 10 ? queryParams.updateTime[1] + ' 23:59:59' : queryParams.updateTime[1]"/>
+                    AND update_time &lt;= #{endDate}
+                </if>
+            </if>
+        </where>
+    </select>
+
+</mapper>

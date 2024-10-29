@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.youlai.boot.system.mapper.DownloadLinkMapper">
+
+    <insert id="insertDownloadLink" parameterType="com.youlai.boot.system.model.entity.DownloadLink">
+        INSERT INTO download_links (file_name, url, created_at)
+        VALUES (#{fileName}, #{url}, #{createdAt})
+    </insert>
+
+    <select id="selectAllDownloadLinks" resultType="com.youlai.boot.system.model.entity.DownloadLink">
+        SELECT id, file_name AS fileName, url, created_at AS createdAt
+        FROM download_links
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youlai.boot.system.mapper.TbUserMapper">
+
+    <!-- 获取普通用户，存储用户的基本信息和父子级关系分页列表 -->
+    <select id="getTbUserPage" resultType="com.youlai.boot.system.model.vo.TbUserVO">
+        SELECT
+                id,
+                username,
+                password,
+                balance,
+                parent_id,
+                create_time,
+                update_time
+        FROM
+            tb_user
+        <where>
+            <if test="queryParams.id != null">
+                AND id = #{queryParams.id}
+            </if>
+            <if test="queryParams.username != null and queryParams.username != ''">
+                AND username = #{queryParams.username}
+            </if>
+            <if test="queryParams.password != null and queryParams.password != ''">
+                AND password = #{queryParams.password}
+            </if>
+            <if test="queryParams.balance != null">
+                AND balance = #{queryParams.balance}
+            </if>
+            <if test="queryParams.parentId != null">
+                AND parent_id = #{queryParams.parentId}
+            </if>
+            <if test="queryParams.createTime != null">
+                AND create_time = #{queryParams.createTime}
+            </if>
+            <if test="queryParams.updateTime != null">
+                AND update_time = #{queryParams.updateTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

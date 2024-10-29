@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youlai.boot.system.mapper.AigcRecordsMapper">
+
+    <!-- 获取订单分页列表 -->
+    <select id="getAigcRecordsPage" resultType="com.youlai.boot.system.model.vo.AigcRecordsVO">
+        SELECT
+                id,
+                order_id,
+                payment_status,
+                payment_amount,
+                user_id,
+                created_time,
+                updated_time
+        FROM
+            tb_aigc_records
+        <where>
+            <if test="queryParams.orderId != null and queryParams.orderId != ''">
+                AND order_id = #{queryParams.orderId}
+            </if>
+            <if test="queryParams.paymentStatus != null">
+                AND payment_status = #{queryParams.paymentStatus}
+            </if>
+            <if test="queryParams.paymentAmount != null">
+                AND payment_amount = #{queryParams.paymentAmount}
+            </if>
+            <if test="queryParams.userId != null">
+                AND user_id = #{queryParams.userId}
+            </if>
+            <if test="queryParams.createdTIme != null">
+                <if test="queryParams.createdTIme[0] != null and queryParams.createdTIme[0] != ''">
+                    <bind name="startDate" value="queryParams.createdTIme[0].length() == 10 ? queryParams.createdTIme[0] + ' 00:00:00' : queryParams.createdTIme[0]"/>
+                    AND created_at &gt;= #{startDate}
+                </if>
+                <if test="queryParams.createdTIme[1] != null and queryParams.createdAt[1] != ''">
+                    <bind name="endDate" value="queryParams.createdTIme[1].length() == 10 ? queryParams.createdTIme[1] + ' 23:59:59' : queryParams.createdTIme[1]"/>
+                    AND created_at &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.updatedAt != null">
+                <if test="queryParams.updatedTIme[0] != null and queryParams.updatedTIme[0] != ''">
+                    <bind name="startDate" value="queryParams.updatedTIme[0].length() == 10 ? queryParams.updatedTIme[0] + ' 00:00:00' : queryParams.updatedTIme[0]"/>
+                    AND updated_time &gt;= #{startDate}
+                </if>
+                <if test="queryParams.updatedAt[1] != null and queryParams.updatedAt[1] != ''">
+                    <bind name="endDate" value="queryParams.updatedTIme[1].length() == 10 ? queryParams.updatedTIme[1] + ' 23:59:59' : queryParams.updatedTIme[1]"/>
+                    AND updated_time &lt;= #{endDate}
+                </if>
+            </if>
+        </where>
+    </select>
+
+</mapper>
